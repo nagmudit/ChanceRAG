@@ -9,8 +9,8 @@
 
 ### Essential Files:
 - `app.py` - Main application
-- `requirements.txt` - Python dependencies
-- `.python-version` - Python version specification (3.11)
+- `requirements.txt` - Python dependencies (updated for Python 3.13 compatibility)
+- `.python-version` - Python version specification (3.11.9)
 - `packages.txt` - System dependencies
 - `input.pdf` - Your PDF document
 
@@ -69,11 +69,14 @@ Since Streamlit Cloud apps are stateless, you have a few options:
 
 ## Common Issues and Solutions
 
-### Issue: Dependencies failing to install
+### Issue: Dependencies failing to install (numpy/distutils error)
+**Solution**: Updated requirements use numpy>=1.26.0 which is compatible with Python 3.13 (no distutils dependency)
+
+### Issue: Dependencies failing to install (general)
 **Solution**: Use the provided `requirements.txt` with compatible versions
 
 ### Issue: Python version compatibility
-**Solution**: The `.python-version` file specifies Python 3.11
+**Solution**: The `.python-version` file specifies Python 3.11.9 for maximum compatibility
 
 ### Issue: API key not found
 **Solution**: Ensure OPENAI_API_KEY is set in Streamlit Cloud secrets
