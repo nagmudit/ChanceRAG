@@ -280,34 +280,6 @@ def main():
     
     elif submit_button and not user_query.strip():
         st.warning("Please enter a question before submitting.")
-    
-    # Sidebar with information
-    with st.sidebar:
-        st.header("About ChanceRAG")
-        st.markdown("""
-        This application uses Retrieval-Augmented Generation (RAG) to answer questions about your PDF document.
-        
-        **Features:**
-        - Vector similarity search
-        - BM25 scoring
-        - PageRank-based reranking
-        - Multiple response styles
-        
-        **How it works:**
-        1. The PDF is chunked and embedded
-        2. Your query is matched against relevant chunks
-        3. Context is provided to GPT-4 for response generation
-        """)
-        
-        if os.path.exists(PDF_PATH):
-            st.success(f"✅ PDF loaded: {PDF_PATH}")
-        else:
-            st.error(f"❌ PDF not found: {PDF_PATH}")
-            
-        if os.path.exists(VECTOR_DB_PATH) and os.path.exists(ANNOY_INDEX_PATH):
-            st.success("✅ Vector database ready")
-        else:
-            st.warning("⚠️ Vector database not found. Processing PDF...")
 
 if __name__ == "__main__":
     main()
