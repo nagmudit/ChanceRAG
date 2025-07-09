@@ -10,31 +10,88 @@ A Retrieval-Augmented Generation (RAG) chatbot built with Streamlit that answers
 - **Real-time Processing**: Streamlit interface for interactive querying
 - **OpenAI Integration**: Uses GPT-4 for response generation
 
-## Installation
+## Installation & Setup
+
+### Quick Start (Automated)
+
+The easiest way to get started is using the automated setup scripts:
+
+**Windows (PowerShell - Recommended):**
+```powershell
+.\start_app.ps1
+```
+
+**Windows (Command Prompt):**
+```cmd
+start_app.bat
+```
+
+**Any Platform:**
+```bash
+python run_app.py
+```
+
+These scripts will automatically:
+1. Create a virtual environment
+2. Install all dependencies
+3. Check for OpenAI API key
+4. Launch the Streamlit application
+
+### Manual Setup
+
+If you prefer to set up manually:
 
 1. Clone the repository
-2. Install dependencies:
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   ```
+3. Activate the virtual environment:
+   - **Windows**: `venv\Scripts\activate`
+   - **Unix/Linux/Mac**: `source venv/bin/activate`
+4. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Set up your OpenAI API key:
+5. **Set up your OpenAI API key** (Choose one method):
+   
+   **Method 1: .env file (Recommended)**
    ```bash
-   export OPENAI_API_KEY="your-api-key-here"
+   # Copy the example file
+   cp .env.example .env
+   
+   # Edit .env and add your API key
+   OPENAI_API_KEY=your-actual-api-key-here
    ```
+   
+   **Method 2: Environment variables**
+   - **Windows (PowerShell)**: `$env:OPENAI_API_KEY="your-api-key-here"`
+   - **Windows (CMD)**: `set OPENAI_API_KEY=your-api-key-here`
+   - **Unix/Linux/Mac**: `export OPENAI_API_KEY="your-api-key-here"`
 
 ## Usage
 
+### Quick Start
 1. Place your PDF file as `input.pdf` in the project directory
-2. Run the Streamlit app:
-   ```bash
-   streamlit run app.py
-   ```
-   Or use the helper script:
-   ```bash
-   python run_app.py
-   ```
-3. Open your browser and navigate to the provided local URL
+2. Run the automated setup script:
+   - **Windows (PowerShell)**: `.\start_app.ps1`
+   - **Windows (CMD)**: `start_app.bat`
+   - **Any Platform**: `python run_app.py`
+3. The application will automatically open in your default browser
 4. Enter your questions and select your preferred response style
+
+### Manual Run
+If you've already set up the environment manually:
+```bash
+streamlit run app.py
+```
+
+### First-Time Setup
+On first run, the application will:
+- Process your PDF document into chunks
+- Generate embeddings for each chunk
+- Build the vector database and search index
+- This may take a few minutes depending on PDF size
 
 ## How It Works
 

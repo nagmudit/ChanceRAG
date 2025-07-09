@@ -12,3 +12,4 @@ streamlit
 fastapi 
 starlette 
 openai
+python-dotenv

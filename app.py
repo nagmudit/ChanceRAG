@@ -13,17 +13,27 @@ from gensim.models import Word2Vec
 from typing import List, Optional, Tuple
 import streamlit as st
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+def get_openai_client():
+    """Get OpenAI client with proper error handling"""
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("OPENAI_API_KEY environment variable not set")
+    return OpenAI(api_key=api_key)
 
 PDF_PATH = "input.pdf"
 VECTOR_DB_PATH = "vector_db.pkl"
 ANNOY_INDEX_PATH = "vector_index.ann"
 
 def get_text_embedding_with_rate_limit(text_list, initial_delay=2, max_retries=10, max_delay=60):
+    client = get_openai_client()
     embeddings = []
     for text in text_list:
         retries = 0
@@ -83,8 +93,25 @@ def store_embeddings_in_vector_db(pdf_path, vector_db_path, annoy_index_path, ch
     annoy_index.build(num_trees)
     annoy_index.save(annoy_index_path)
 
-if not os.path.exists(VECTOR_DB_PATH) or not os.path.exists(ANNOY_INDEX_PATH):
-    store_embeddings_in_vector_db(PDF_PATH, VECTOR_DB_PATH, ANNOY_INDEX_PATH)
+def initialize_vector_database():
+    """Initialize vector database if it doesn't exist"""
+    if not os.path.exists(VECTOR_DB_PATH) or not os.path.exists(ANNOY_INDEX_PATH):
+        if not os.path.exists(PDF_PATH):
+            st.error(f"PDF file not found: {PDF_PATH}")
+            st.stop()
+        
+        # Check if OpenAI API key is available
+        try:
+            get_openai_client()
+        except ValueError as e:
+            st.error(f"OpenAI API Key Error: {e}")
+            st.info("Please set your OPENAI_API_KEY environment variable and restart the application.")
+            st.stop()
+        
+        with st.spinner("Processing PDF and creating vector database... This may take a few minutes."):
+            store_embeddings_in_vector_db(PDF_PATH, VECTOR_DB_PATH, ANNOY_INDEX_PATH)
+        st.success("Vector database created successfully!")
+        st.rerun()
 
 class MistralRAGChatbot:
     def __init__(self, vector_db_path: str, annoy_index_path: str):
@@ -99,6 +126,7 @@ class MistralRAGChatbot:
 
     def get_text_embedding(self, text: str) -> np.ndarray:
         try:
+            client = get_openai_client()
             response = client.embeddings.create(
                 model="text-embedding-3-small",
                 input=[text]
@@ -153,6 +181,7 @@ class MistralRAGChatbot:
         context = "\n\n".join([doc['text'] for doc in reranked_docs])
         prompt = self.build_prompt(context, query, style)
         try:
+            client = get_openai_client()
             response = ""
             stream = client.chat.completions.create(
                 model="gpt-4o",
@@ -173,6 +202,42 @@ def main():
         page_icon="🤖",
         layout="wide"
     )
+    
+    # Check for API key first
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        st.error("🔑 OpenAI API Key Required")
+        st.markdown("""
+        **Please set your OpenAI API key in the .env file:**
+        
+        Create a `.env` file in the project directory and add:
+        ```
+        OPENAI_API_KEY=your-api-key-here
+        ```
+        
+        Or set it as an environment variable:
+        
+        **Windows (PowerShell):**
+        ```powershell
+        $env:OPENAI_API_KEY="your-api-key-here"
+        ```
+        
+        **Windows (Command Prompt):**
+        ```cmd
+        set OPENAI_API_KEY=your-api-key-here
+        ```
+        
+        **Unix/Linux/Mac:**
+        ```bash
+        export OPENAI_API_KEY="your-api-key-here"
+        ```
+        
+        After setting the API key, restart the application.
+        """)
+        st.stop()
+    
+    # Initialize vector database if needed
+    initialize_vector_database()
     
     # Display logo
     st.image("images/chanceRAG_logo.jpg", width=400)
