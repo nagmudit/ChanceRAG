@@ -1,0 +1,14 @@
+huggingface_hub==0.22.2
+pymupdf 
+mistralai 
+annoy 
+scikit-learn 
+dill 
+numpy 
+rank_bm25 
+gensim 
+networkx 
+streamlit
+fastapi 
+starlette 
+openai
