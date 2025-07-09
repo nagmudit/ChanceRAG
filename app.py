@@ -239,8 +239,7 @@ def main():
     # Display logo
     st.image("images/chanceRAG_logo.jpg", width=400)
     
-    st.title("ChanceRAG - Document Question Answering")
-    st.markdown("Ask questions about the uploaded PDF document and get intelligent responses.")
+    st.title("ChanceRAG")
     
     # Create two columns for better layout
     col1, col2 = st.columns([2, 1])
