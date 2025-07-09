@@ -1,0 +1,25 @@
+# Streamlit Cloud compatible requirements
+# This file is optimized for Streamlit Cloud deployment
+
+# Core dependencies with compatible versions
+streamlit==1.38.0
+numpy==1.24.3
+scikit-learn==1.3.2
+networkx==3.1
+
+# Document processing
+pymupdf==1.23.26
+
+# Vector search and similarity
+annoy==1.17.3
+rank_bm25==0.2.2
+
+# Utilities
+dill==0.3.7
+python-dotenv==1.0.0
+
+# OpenAI
+openai==1.51.2
+
+# HuggingFace (for any future model downloads)
+huggingface_hub==0.19.4

@@ -12,6 +12,9 @@ openai_key.txt
 api_keys.txt
 secrets.txt
 
+# Streamlit secrets (but allow config)
+.streamlit/secrets.toml
+
 # Python
 __pycache__/
 *.py[cod]

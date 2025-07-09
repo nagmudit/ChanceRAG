@@ -1,15 +1,14 @@
-huggingface_hub==0.22.2
-pymupdf 
-mistralai 
-annoy 
-scikit-learn 
-dill 
-numpy 
-rank_bm25 
-gensim 
-networkx 
-streamlit
-fastapi 
-starlette 
-openai
-python-dotenv
+# ChanceRAG Streamlit Application Requirements
+# Optimized for both local development and Streamlit Cloud deployment
+
+streamlit==1.38.0
+numpy==1.24.3
+scikit-learn==1.3.2
+networkx==3.1
+pymupdf==1.23.26
+annoy==1.17.3
+rank_bm25==0.2.2
+dill==0.3.7
+python-dotenv==1.0.0
+openai==1.51.2
+huggingface_hub==0.19.4

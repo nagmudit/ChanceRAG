@@ -69,6 +69,17 @@ If you prefer to set up manually:
    - **Windows (CMD)**: `set OPENAI_API_KEY=your-api-key-here`
    - **Unix/Linux/Mac**: `export OPENAI_API_KEY="your-api-key-here"`
 
+### Streamlit Cloud Deployment
+
+For cloud deployment, see [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+
+**Quick Deploy:**
+1. Push your code to GitHub
+2. Go to https://share.streamlit.io
+3. Connect your GitHub repository
+4. Set your OpenAI API key in Streamlit Cloud secrets
+5. Deploy!
+
 ## Usage
 
 ### Quick Start

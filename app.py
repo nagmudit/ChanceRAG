@@ -4,12 +4,10 @@ import numpy as np
 import dill
 import os
 import logging
-import asyncio
 import networkx as nx
 from annoy import AnnoyIndex
 from sklearn.metrics.pairwise import cosine_similarity
 from rank_bm25 import BM25Okapi
-from gensim.models import Word2Vec
 from typing import List, Optional, Tuple
 import streamlit as st
 from openai import OpenAI
@@ -122,7 +120,6 @@ class MistralRAGChatbot:
         self.annoy_index = AnnoyIndex(self.embeddings.shape[1], 'angular')
         self.annoy_index.load(annoy_index_path)
         self.bm25 = BM25Okapi([text.split() for text in self.texts])
-        self.word2vec_model = Word2Vec([text.split() for text in self.texts], vector_size=100, window=5, min_count=1, workers=4)
 
     def get_text_embedding(self, text: str) -> np.ndarray:
         try:
